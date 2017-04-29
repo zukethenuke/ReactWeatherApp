@@ -2,42 +2,47 @@ var React = require('react');
 var {Link, IndexLink} = require('react-router');
 
 var Nav = React.createClass({
-
   onSearch: function (e) {
-    e.preventDefault();
-    alert('Not yet wired up');
+      e.preventDefault();
+
+      var location = this.refs.search.value;
+      var encodedLocation = encodeURIComponent(location);
+
+      if (location.length > 0) {
+        this.refs.search.value = '';
+        window.location.hash = '#/?location=' + encodedLocation;
+      }
   },
-    
-  render: function() {
+  render: function () {
     return (
-        <div className='top-bar'>
-          <div className='top-bar-left'>
-            <ul className='menu'>
-              <li className='menu-text'>React Weather App</li>
+      <div className="top-bar">
+        <div className="top-bar-left">
+          <ul className="menu">
+            <li className="menu-text">React Weather App</li>
+            <li>
+              <IndexLink to="/" activeClassName="active" activeStyle={{fontWeight: 'bold'}}>Get Weather</IndexLink>
+            </li>
+            <li>
+              <Link to="/about" activeClassName="active"  activeStyle={{fontWeight: 'bold'}}>About</Link>
+            </li>
+            <li>
+              <Link to="/examples" activeClassName="active" activeStyle={{fontWeight: 'bold'}}>Examples</Link>
+            </li>
+          </ul>
+        </div>
+        <div className="top-bar-right">
+          <form onSubmit={this.onSearch}>
+            <ul className="menu">
               <li>
-                <IndexLink to='/' activeClassName='active' activeStyle={{fontWeight: 'bold'}}>Get Weather</IndexLink>
+                <input type="search" placeholder="Search weather by city" ref="search"/>
               </li>
               <li>
-                <Link to='about' activeClassName='active' activeStyle={{fontWeight: 'bold'}}>About</Link>
-              </li>
-              <li>
-                <Link to='examples' activeClassName='active' activeStyle={{fontWeight: 'bold'}}>Examples</Link>
+                <input type="submit" className="button" value="Get Weather"/>
               </li>
             </ul>
-          </div>
-          <div className='top-bar-right'>
-            <form onSubmit={this.onSearch}>
-              <ul className='menu'>
-                <li>
-                  <input type="search" placeholder='Search weather by city'/>  
-                </li>  
-                <li>
-                  <button type='button' className='button'>Get Weather</button>
-                </li>              
-              </ul>
-            </form>
-          </div>
+          </form>
         </div>
+      </div>
     );
   }
 });
